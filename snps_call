@@ -1,0 +1,13 @@
+# Calculate likelihoods (similar to what HaplotypeCaller would do)
+
+/usr/bin/bcftools-1.9/bcftools mpileup -f ./bank_vole_11Jun2018_KbcOz2.fasta ./2_european_samples.bam --output-type b --output ./2_european_voles_compressed_results.bcf  -a FORMAT/DP --threads 28 # Estimate likelihood that a polimorphic site is a snp
+
+
+# Call snps
+
+/usr/bin/bcftools-1.9/bcftools call 2_european_voles_compressed_results.bcf --output-type b --output ./2_european_voles_snps_bcftools_compressed.bcf --threads 28 -m # Call snps 
+
+ 
+# Filter snps 
+
+vcftools --bcf 2_european_voles_snps_bcftools_compressed.bcf --recode -c --min-meanDP 7 > european_filter_meandp7.vcf
